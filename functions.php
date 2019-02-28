@@ -4,8 +4,7 @@ function fromEuro (float $sum, string $currency, bool $reverse=false)
 {
     $arrCur = getConfig('currency_now.cfg');
     $result = $sum;
-    foreach ($arrCur as $k => $v)
-    {
+    foreach ($arrCur as $k => $v) {
         if ($currency == $arrCur[$k][0])
             $result = $reverse ? (real) $sum/$arrCur[$k][1] : 
                                            (real) $sum*$arrCur[$k][1];
@@ -17,7 +16,7 @@ function format(float $sum, string $currency)
 {           
     if ($currency == 'JPY') {
         return ceil($sum);
-    } else {
+        } else {
         return sprintf("%.2f", ceil($sum*100)/100);
     }
 }
@@ -39,8 +38,7 @@ function calculateFee(array $input)
             $commission = ($tmp<$sSum*0.003 ? $tmp : $sSum*0.003);
         break;
         case "cash_out":
-            switch ($sPerson)
-            {
+            switch ($sPerson) {
                 case "legal":
                     $tmp = fromEuro(5, $sCurrency);
                     $commission = ($tmp > $sSum*0.03 ? $tmp : $sSum*0.03);
@@ -49,9 +47,8 @@ function calculateFee(array $input)
                     $clidweek = $sId*1000000+date("oW", strtotime($sDate));
                     if (!array_key_exists($clidweek,$weeks)) {
                         $weeks[$clidweek] = [
-								                "remain_transactions" => 0,
-								                "remain_sum" => 1000
-							                ];
+                                                "remain_transactions" => 0,                                                "remain_sum" => 1000
+                                            ];
                     };
                     $thisweek = $weeks[$clidweek];
                     $commission = 0.00;
@@ -60,7 +57,7 @@ function calculateFee(array $input)
                     } else {
                         $remainSum = 
                                 fromEuro($thisweek["remain_sum"], $sCurrency);
-                            if ($remainSum >= $sSum) {
+                        if ($remainSum >= $sSum) {
                             $commission = 0;
                             $thisweek["remain_sum"] -= 
                                 fromEuro($sSum, $sCurrency, true);
@@ -76,7 +73,7 @@ function calculateFee(array $input)
 }
 // it's finish with custom subdirectory
 function inOutDir(string $dir)
-{          
+{
     $dir = __DIR__."/".$dir."/";
     if (is_dir($dir)) {
         if ($dh = opendir($dir)) {
@@ -97,14 +94,14 @@ function inOutDir(string $dir)
 //function for pull currencies and prices. You can change or add currency 
 //in .cfg file
 function getConfig(string $file)
-{	
+{
     $stringFile = __DIR__."/".$file;
     $config = [];
         if (is_file($stringFile)) {
             $fr1 = fopen($stringFile, "r");
             while ($line = fgets($fr1)) {
                 array_push($config,explode(':', trim($line)));
-			}
+            }
             fclose($fr1);
         }
     return $config;
