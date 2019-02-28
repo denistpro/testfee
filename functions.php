@@ -13,11 +13,12 @@ function fromEuro (float $sum, string $currency, bool $reverse=false)
 }
 // function for digital format
 function format(float $sum, string $currency)
-{           
-    if ($currency == 'JPY') {
-        return ceil($sum);
+{
+    $arrCur = getConfig('currency_now.cfg');
+        if ($arrCur[$currency][1] >= 100) {
+            return ceil($sum);
         } else {
-        return sprintf("%.2f", ceil($sum*100)/100);
+            return sprintf("%.2f", ceil($sum*100)/100);
     }
 }
 // main function for calculate fee
