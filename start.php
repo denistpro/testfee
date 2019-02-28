@@ -1,4 +1,3 @@
 <?php
-require 'functions.php';
-inOutDir('input');
-?>
+    require 'functions.php';
+    inOutDir('input');
